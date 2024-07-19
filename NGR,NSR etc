@@ -1,0 +1,66 @@
+vector<int> nextGreaterRight(const vector<int>& arr) {
+    vector<int> ngr(arr.size(), -1);
+    stack<int> s;
+    
+    for (int i = arr.size() - 1; i >= 0; --i) {
+        while (!s.empty() && s.top() <= arr[i]) {
+            s.pop();
+        }
+        if (!s.empty()) {
+            ngr[i] = s.top();
+        }
+        s.push(arr[i]);
+    }
+    return ngr;
+}
+
+// Function to find Next Smaller Element to the Right (NSR)
+vector<int> nextSmallerRight(const vector<int>& arr) {
+    vector<int> nsr(arr.size(), -1);
+    stack<int> s;
+    
+    for (int i = arr.size() - 1; i >= 0; --i) {
+        while (!s.empty() && s.top() >= arr[i]) {
+            s.pop();
+        }
+        if (!s.empty()) {
+            nsr[i] = s.top();
+        }
+        s.push(arr[i]);
+    }
+    return nsr;
+}
+
+// Function to find Next Greater Element to the Left (NGL)
+vector<int> nextGreaterLeft(const vector<int>& arr) {
+    vector<int> ngl(arr.size(), -1);
+    stack<int> s;
+    
+    for (int i = 0; i < arr.size(); ++i) {
+        while (!s.empty() && s.top() <= arr[i]) {
+            s.pop();
+        }
+        if (!s.empty()) {
+            ngl[i] = s.top();
+        }
+        s.push(arr[i]);
+    }
+    return ngl;
+}
+
+// Function to find Next Smaller Element to the Left (NSL)
+vector<int> nextSmallerLeft(const vector<int>& arr) {
+    vector<int> nsl(arr.size(), -1);
+    stack<int> s;
+    
+    for (int i = 0; i < arr.size(); ++i) {
+        while (!s.empty() && s.top() >= arr[i]) {
+            s.pop();
+        }
+        if (!s.empty()) {
+            nsl[i] = s.top();
+        }
+        s.push(arr[i]);
+    }
+    return nsl;
+}
