@@ -2,7 +2,7 @@
 #include <stack>
 using namespace std;
 
-class Solution {
+class Stack {
 public:
     vector<int> NGR(const vector<int>& arr) {
         vector<int> ngr(arr.size(), arr.size());
