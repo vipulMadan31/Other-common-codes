@@ -1,0 +1,66 @@
+struct node{
+    int sum;//node would store sum,(state)
+    node(){
+        sum=0;
+    }
+};
+node merge(node a, node b){
+    node ans;
+    ans.sum=max(a.sum,b.sum);
+    return ans;//transition
+}
+vec arr; vector<node> seg;
+void build(int i=0, int low=0, int high=arr.size()-1){
+    if(low==high){
+        //base case 
+        seg[i].sum=arr[low];
+        return;//leaf node is arr[low] only not arr[i]
+    }
+    int mid=(low+high)/2;
+    build(2*i+1,low,mid);
+    build(2*i+2,mid+1,high);
+    seg[i]=merge(seg[2*i+1],seg[2*i+2]);
+}
+void update(int pos, int val,int i=0, int low=0, int high=arr.size()-1){
+    //we would need base case, and a pruning statement, 
+    //pruing statement is koi chutiyaap hojaye 
+    //we do it in range (low,high) updating seg[pos]=val;
+    if(pos<low || pos>high){
+        return;//agar out of range: go out
+    }
+    if(low==high){
+        seg[i].sum-=val;
+        return;
+    }
+    int mid=(low+high)/2;
+    update(pos,val,2*i+1,low,mid);
+    update(pos,val,2*i+2,mid+1,high);
+    seg[i]=merge(seg[2*i+1],seg[2*i+2]);
+}
+int query(int a,int i=0, int low=0, int high=arr.size()-1){
+    if(seg[i].sum<a) return -1;//yahi element chotta hogya toh we cant do anything 
+    
+    if(low==high) return low;//if you reach a leaf node, you have only 1 ele: return it
+    int mid=(low+high)/2;
+    if(seg[2*i+1].sum>=a){
+        //ie we can have it on left, go to left(as we need the smallest index)
+        return query(a,2*i+1,low,mid);    
+    }
+    return query(a,2*i+2,mid+1,high);
+}
+signed main(){
+    fastio();
+    int n,q; cin>>n>>q;
+    arr.resize(n); seg.resize(4*n);
+    ffor(n) cin>>arr[i];
+    build();
+    // for(auto &x: seg) cout<<x.sum<<" ";
+    // cout<<endl;
+    while(q--){
+        int a; cin>>a;
+        //debug(a);
+        int i=query(a);
+        cout<<i+1<<" ";
+        if(i!=-1) update(i,a);//for update just pass as (pos,val): do -=val, done
+    }
+}
