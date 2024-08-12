@@ -1,0 +1,21 @@
+struct os{
+    //you can alter the less to greater for rev set 
+    //less_equal for multiset
+    oset<int> st;
+    void insert(int a){
+        st.insert(a);
+    }
+    void erase(int a){
+        st.erase(a);
+    }
+    int smallerCount(int a){
+        return st.order_of_key(a);
+    }
+    int Index(int i){
+        return *st.find_by_order(i);
+    }
+    void Debug(){
+        for(auto& x: st) cout<<x<<' ';
+        cout<<endl;
+    }
+};
