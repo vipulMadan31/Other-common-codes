@@ -1,0 +1,72 @@
+#include <array>
+#include <iostream>
+
+class Matrix {
+private:
+    static constexpr int SIZE = 26;
+    static constexpr int MOD = 1e9 + 7;
+    std::array<std::array<int, SIZE>, SIZE> mat{};
+
+public:
+    Matrix() = default;
+
+    // Optional: Constructor to initialize from 2D array
+    Matrix(const std::array<std::array<int, SIZE>, SIZE>& init) : mat(init) {}
+
+    // Access element (read/write)
+    std::array<int, SIZE>& operator[](int index) {
+        return mat[index];
+    }
+
+    const std::array<int, SIZE>& operator[](int index) const {
+        return mat[index];
+    }
+
+    // Matrix multiplication
+    Matrix multiply(const Matrix& other) const {
+        Matrix result;
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                for (int k = 0; k < SIZE; ++k) {
+                    result.mat[i][j] = (result.mat[i][j] + 1LL * mat[i][k] * other.mat[k][j] % MOD) % MOD;
+                }
+            }
+        }
+        return result;
+    }
+
+    // Matrix exponentiation
+    Matrix power(int exp) const {
+        Matrix result = Matrix::identity();
+        Matrix base = *this;
+
+        while (exp > 0) {
+            if (exp & 1)
+                result = result.multiply(base);
+            base = base.multiply(base);
+            exp /= 2;
+        }
+
+        return result;
+    }
+
+    // Create identity matrix
+    static Matrix identity() {
+        Matrix id;
+        for (int i = 0; i < SIZE; ++i)
+            id.mat[i][i] = 1;
+        return id;
+    }
+};
+//Exmple Usage
+(* int main() {
+    Matrix A;
+    A[0][0] = 1;
+    A[0][1] = 1;
+    A[1][0] = 1;
+
+    Matrix B = A.power(5);
+
+    std::cout << B[0][0] << "\n";
+    return 0;
+} *)
